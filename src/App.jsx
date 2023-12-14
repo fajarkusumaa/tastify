@@ -70,14 +70,15 @@ function App() {
   }, []);
 
   const handleSearchRecipes = async () => {
-    const randomFood = bestFood[Math.floor(Math.random() * bestFood.length)];
     let url;
 
     if (input) {
       url = `https://api.edamam.com/api/recipes/v2?type=public&q=${input}&app_id=${APP_ID}&app_key=${APP_KEY}`;
       setIsSelect(false);
       setList();
+      console.log(list.length);
     } else {
+      const randomFood = bestFood[Math.floor(Math.random() * bestFood.length)];
       url = `https://api.edamam.com/api/recipes/v2?type=public&q=${randomFood}&app_id=${APP_ID}&app_key=${APP_KEY}`;
       setIsSelect(false);
       setList();
@@ -85,10 +86,21 @@ function App() {
 
     try {
       const response = await axios.get(url);
-      setList(response.data.hits);
+      setList(response.data);
+      console.log(list._links.next.href);
     } catch (error) {
       console.error("Error fetching data ", error);
     }
+  };
+
+  const handleNextPage = async () => {
+    setList();
+    let url;
+
+    url = list?._links.next.href;
+
+    const response = await axios.get(url);
+    setList(response.data);
   };
 
   // Set Clock
@@ -113,7 +125,7 @@ function App() {
             </h1>
             {/* Search form */}
             <form
-              className="relative flex h-14 w-[500px] items-center gap-4 rounded-xl bg-slate-200 p-2 ps-6 text-xl text-slate-50 dark:bg-white dark:bg-opacity-10 dark:text-white"
+              className="relative flex h-14 w-[500px] items-center gap-4 rounded-xl bg-slate-200 p-2 ps-6 text-xl text-slate-700 dark:bg-white dark:bg-opacity-10 dark:text-white"
               onSubmit={() => handleSearchRecipes()}
             >
               <input
@@ -133,7 +145,7 @@ function App() {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="h-4 w-4"
+                    className="h-4 w-4 text-white"
                   >
                     <path
                       strokeLinecap="round"
@@ -154,6 +166,7 @@ function App() {
                   className="peer sr-only"
                   onClick={() => toggleTheme()}
                 />
+
                 <div className="peer h-8 w-14 rounded-full bg-slate-600 after:absolute after:start-[4px] after:top-[4px] after:h-6 after:w-6 after:rounded-full after:border-gray-300 after:bg-orange-500 after:transition-all after:content-[''] peer-checked:bg-slate-500 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-slate-300 rtl:peer-checked:after:-translate-x-full dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-slate-800"></div>
               </label>
               <a href="https://github.com/fajarkusumaa">
@@ -174,7 +187,7 @@ function App() {
           {isSelect === false && (
             <>
               <div className="relative mt-8 grid flex-1 grid-cols-5 gap-8 gap-y-40 overflow-y-auto pe-4 pt-20 text-white">
-                {list?.map((item, i) => (
+                {list?.hits.map((item, i) => (
                   <a
                     key={i}
                     onClick={() => setData(item)}
@@ -191,17 +204,20 @@ function App() {
                     <p className="text-base text-slate-600 opacity-50 dark:text-slate-50">
                       {Math.round(item.recipe.calories)} calories
                     </p>
-                    <div className="my-6 w-full border-t opacity-20"></div>
+                    <div className="my-6 w-full border-t border-slate-400 dark:opacity-20"></div>
                     <div className="flex w-full justify-center gap-2 overflow-hidden">
-                      <span className="line-clamp-1 rounded-md bg-slate-600 bg-opacity-10 p-2 text-sm text-slate-500 dark:bg-white dark:text-white">
+                      <span className="line-clamp-1 rounded-md bg-slate-600 p-2 text-sm text-slate-200 dark:bg-white dark:bg-opacity-10 dark:text-white">
                         {item.recipe.dishType}
                       </span>
-                      <span className="line-clamp-1 rounded-md bg-slate-600 bg-opacity-10 p-2 text-sm text-slate-500 dark:bg-white dark:text-white">
+                      <span className="line-clamp-1 rounded-md bg-slate-600 p-2 text-sm text-slate-200 dark:bg-white dark:bg-opacity-10 dark:text-white">
                         {item.recipe.cuisineType}
                       </span>
                     </div>
                   </a>
                 ))}
+              </div>
+              <div className="flex items-start gap-2">
+                <button onClick={() => handleNextPage()}>Next</button>
               </div>
             </>
           )}
