@@ -1,7 +1,7 @@
 import axios from "axios";
 import "./App.css";
 import { useState } from "react";
-import moment from "moment/moment";
+// import moment from "moment/moment";
 import { useEffect } from "react";
 
 function App() {
@@ -100,26 +100,26 @@ function App() {
 
   return (
     <>
-      <div className=" flex h-screen w-screen overflow-hidden bg-slate-200 p-8 px-12 duration-200 ease-in dark:bg-slate-900">
+      <div className=" flex h-screen w-screen overflow-hidden bg-slate-300 p-8 px-12 duration-200 ease-in dark:bg-slate-900">
         <div className="flex h-full w-full flex-col justify-start gap-4">
           {/* NAVBAR */}
           <div className="flex h-fit items-center justify-between">
             <h1
               onClick={() => setIsSelect(false)}
-              className="cursor-pointer text-4xl"
+              className="cursor-pointer text-4xl font-bold text-slate-700 dark:text-slate-50"
             >
               Tastify
-              <span className="text-orange-500 dark:text-blue-500">.</span>
+              <span className="text-orange-500">.</span>
             </h1>
             {/* Search form */}
             <form
-              className="relative flex h-14 w-[500px] items-center gap-4 rounded-xl bg-white bg-opacity-10 p-2 ps-6 text-xl text-white"
+              className="relative flex h-14 w-[500px] items-center gap-4 rounded-xl bg-slate-200 p-2 ps-6 text-xl text-slate-50 dark:bg-white dark:bg-opacity-10 dark:text-white"
               onSubmit={() => handleSearchRecipes()}
             >
               <input
                 type="text"
                 className="w-full border-none bg-transparent outline-none"
-                placeholder="chicken, beef, bacon, fried rice"
+                placeholder="chicken, beef, bacon, fried rice .etc"
                 onChange={(event) => setInput(event.target.value)}
               />
               {input && (
@@ -146,7 +146,7 @@ function App() {
             </form>
 
             {/* Misc */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4">
               <label className="relative inline-flex cursor-pointer items-center">
                 <input
                   type="checkbox"
@@ -154,15 +154,14 @@ function App() {
                   className="peer sr-only"
                   onClick={() => toggleTheme()}
                 />
-                <div className="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rtl:peer-checked:after:-translate-x-full dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-blue-800"></div>
-                <span className="ms-3 text-sm font-medium text-gray-900 dark:text-gray-300"></span>
+                <div className="peer h-8 w-14 rounded-full bg-slate-600 after:absolute after:start-[4px] after:top-[4px] after:h-6 after:w-6 after:rounded-full after:border-gray-300 after:bg-orange-500 after:transition-all after:content-[''] peer-checked:bg-slate-500 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-slate-300 rtl:peer-checked:after:-translate-x-full dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-slate-800"></div>
               </label>
               <a href="https://github.com/fajarkusumaa">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="36"
                   height="36"
-                  className="fill-slate-500 ease-in hover:fill-orange-400"
+                  className="fill-slate-700 ease-in hover:fill-orange-400 dark:fill-slate-500"
                   viewBox="0 0 24 24"
                 >
                   <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
@@ -179,23 +178,25 @@ function App() {
                   <a
                     key={i}
                     onClick={() => setData(item)}
-                    className="relative z-0 flex h-80 cursor-pointer flex-col items-center justify-end rounded-lg bg-white bg-opacity-10 p-6 pt-16 text-center text-white duration-100 ease-in hover:scale-105 hover:bg-opacity-25 hover:text-white"
+                    className="relative z-0 flex h-80 cursor-pointer flex-col items-center justify-end rounded-lg bg-slate-200 p-6 pt-16 text-center text-white duration-100 ease-in hover:scale-105 hover:text-white dark:bg-white dark:bg-opacity-10 dark:hover:bg-opacity-25"
                   >
                     <img
                       src={item.recipe.images.THUMBNAIL.url}
                       alt=""
                       className="absolute -top-16 w-44 rounded-full"
                     />
-                    <p className="line-clamp-1 text-xl">{item.recipe.label}</p>
-                    <p className="text-base opacity-50">
+                    <p className="line-clamp-1 text-xl font-semibold text-slate-600 dark:text-slate-50">
+                      {item.recipe.label}
+                    </p>
+                    <p className="text-base text-slate-600 opacity-50 dark:text-slate-50">
                       {Math.round(item.recipe.calories)} calories
                     </p>
                     <div className="my-6 w-full border-t opacity-20"></div>
                     <div className="flex w-full justify-center gap-2 overflow-hidden">
-                      <span className="line-clamp-1 rounded-md bg-white bg-opacity-10 p-2 text-sm text-white">
+                      <span className="line-clamp-1 rounded-md bg-slate-600 bg-opacity-10 p-2 text-sm text-slate-500 dark:bg-white dark:text-white">
                         {item.recipe.dishType}
                       </span>
-                      <span className="line-clamp-1 rounded-md bg-white bg-opacity-10 p-2 text-sm text-white">
+                      <span className="line-clamp-1 rounded-md bg-slate-600 bg-opacity-10 p-2 text-sm text-slate-500 dark:bg-white dark:text-white">
                         {item.recipe.cuisineType}
                       </span>
                     </div>
