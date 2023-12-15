@@ -112,7 +112,7 @@ function App() {
 
   return (
     <>
-      <div className=" flex h-screen w-screen overflow-hidden bg-slate-300 p-8 px-12 duration-200 ease-in dark:bg-slate-900">
+      <div className=" relative flex h-screen w-screen overflow-hidden bg-slate-300 p-8 px-12 duration-200 ease-in dark:bg-slate-900">
         <div className="flex h-full w-full flex-col justify-start gap-4">
           {/* NAVBAR */}
           <div className="flex h-fit items-center justify-between">
@@ -167,7 +167,7 @@ function App() {
                   onClick={() => toggleTheme()}
                 />
 
-                <div className="peer h-8 w-14 rounded-full bg-slate-600 after:absolute after:start-[4px] after:top-[4px] after:h-6 after:w-6 after:rounded-full after:border-gray-300 after:bg-orange-500 after:transition-all after:content-[''] peer-checked:bg-slate-500 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-slate-300 rtl:peer-checked:after:-translate-x-full dark:border-gray-600 dark:bg-gray-700 dark:peer-focus:ring-slate-800"></div>
+                <div className="peer h-8 w-14 rounded-full bg-slate-400 after:absolute after:start-[4px] after:top-[4px] after:h-6 after:w-6 after:rounded-full after:border-gray-300 after:bg-slate-500 after:transition-all after:content-[''] peer-checked:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-slate-300 rtl:peer-checked:after:-translate-x-full dark:border-gray-600 dark:after:bg-orange-500  dark:peer-focus:ring-slate-800"></div>
               </label>
               <a
                 href="https://github.com/fajarkusumaa"
@@ -223,7 +223,7 @@ function App() {
                 <div className="mt-4 flex gap-2">{/* {list._links.} */}</div>
               </div>
 
-              <div className="w-100 mt-5 text-center text-base font-bold dark:text-white">
+              <div className="absolute bottom-0 left-0 w-full bg-slate-300 py-4 text-center text-lg font-bold text-slate-600 dark:bg-slate-900 dark:text-white">
                 Support by{" "}
                 <a
                   href="https://developer.edamam.com/edamam-recipe-api"
@@ -248,17 +248,19 @@ function App() {
             <>
               <div className="mt-8 flex h-full flex-1 justify-between gap-4 overflow-hidden">
                 <div className="relative flex h-full w-full flex-col">
-                  <div className="flex justify-between">
-                    <div>
-                      <span className="uppercase tracking-widest text-orange-300">
-                        {dataItem.recipe.dishType}
-                      </span>
-                      <h1 className="mt-3">{dataItem.recipe.label}</h1>
-                    </div>
+                  <div className="mb-8">
+                    <span className="uppercase tracking-widest text-slate-600 dark:text-orange-400">
+                      {dataItem.recipe.dishType}
+                    </span>
+                    <h1 className="mt-3 text-slate-700 dark:text-white">
+                      {dataItem.recipe.label}
+                    </h1>
                   </div>
                   {/* Ingredients */}{" "}
-                  <h5 className="mt-8 text-2xl text-orange-300">Ingredients</h5>
-                  <div className="mb-8 mt-4 grid w-3/4 grid-cols-6 gap-8 overflow-y-auto ">
+                  <p className="uppercase tracking-widest text-slate-600 dark:text-orange-400">
+                    Ingredients
+                  </p>
+                  <div className="mb-8 mt-4 grid w-5/6 grid-cols-6 gap-8 overflow-y-auto pe-24">
                     {dataItem.recipe.ingredients.map((item, i) => (
                       <div
                         key={i}
@@ -269,18 +271,18 @@ function App() {
                           alt=""
                           className="aspect-square w-full rounded-full object-cover"
                         />
-                        <p className="text-center font-bold capitalize">
+                        <p className="text-center font-bold capitalize text-slate-600 dark:text-white">
                           {item.food}
                         </p>
                       </div>
                     ))}
                   </div>
-                  <span className="mt-auto dark:text-white">
+                  <span className="mt-auto  text-slate-600 dark:text-white">
                     Source :{" "}
                     <a
                       href={dataItem.recipe.url}
                       target="_blank"
-                      className="text-orange-300 hover:text-orange-400"
+                      className="text-orange-400 hover:text-orange-700 dark:text-orange-400"
                       rel="noreferrer"
                     >
                       {dataItem.recipe.source}
@@ -288,14 +290,15 @@ function App() {
                   </span>
                 </div>
 
-                <div className="flex w-1/3 flex-col rounded-3xl bg-white ">
+                <div className="flex w-1/3 flex-col overflow-hidden rounded-3xl bg-white">
                   <img
                     src={dataItem.recipe.image}
                     alt=""
                     className="relative z-10 h-52 rounded-3xl object-cover shadow-lg"
                   />
 
-                  <div className="relative -top-20 flex-1 rounded-3xl p-14 pt-32">
+                  {/* Sidebar */}
+                  <div className="relative h-full flex-1 overflow-y-auto rounded-3xl p-8 pb-24 pt-8">
                     <div className="flex items-center gap-4 text-lg text-slate-700">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -341,16 +344,21 @@ function App() {
                       </span>
                     </div>
 
-                    <h1 className="mt-5 text-3xl text-slate-900">
-                      Ingredients
-                    </h1>
-                    <ul className="list-inside list-disc">
-                      {dataItem.recipe.ingredientLines.map((list, i) => (
-                        <li key={i} className="leading-8 text-slate-700">
-                          {list}
-                        </li>
-                      ))}
-                    </ul>
+                    <div className="h-full">
+                      <h1 className="mt-5 text-3xl text-slate-900">
+                        Ingredients
+                      </h1>
+                      <ul className="order h-full list-inside list-disc">
+                        {dataItem.recipe.ingredientLines.map((list, i) => (
+                          <li
+                            key={i}
+                            className="text-sm leading-8 text-slate-700"
+                          >
+                            {list}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
