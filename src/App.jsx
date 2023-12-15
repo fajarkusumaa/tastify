@@ -23,9 +23,11 @@ function App() {
   };
 
   const [list, setList] = useState();
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState();
   const [isSelect, setIsSelect] = useState(false);
   const [isLoading, setIsLoading] = useState();
+
+  console.log(input);
 
   const [dataItem, setDataItem] = useState();
   console.log(dataItem);
@@ -71,17 +73,21 @@ function App() {
   }, []);
 
   const handleSearchRecipes = async () => {
+    setList();
     let url;
 
-    if (input) {
+    if (input && input.length >= 1) {
       url = `https://api.edamam.com/api/recipes/v2?type=public&q=${input}&app_id=${APP_ID}&app_key=${APP_KEY}`;
       setIsSelect(false);
-      setList();
+
+      console.log("fetching search list");
     } else {
-      const randomFood = bestFood[Math.floor(Math.random() * bestFood.length)];
+      const randomFood =
+        await bestFood[Math.floor(Math.random() * bestFood.length)];
       url = `https://api.edamam.com/api/recipes/v2?type=public&q=${randomFood}&app_id=${APP_ID}&app_key=${APP_KEY}`;
       setIsSelect(false);
-      setList();
+
+      console.log("fetching random list");
     }
 
     try {
@@ -125,6 +131,49 @@ function App() {
           {isSelect === false && (
             <>
               <div className="relative mt-8 grid flex-1 grid-cols-5 gap-8 gap-y-40 overflow-y-auto pe-4 pt-20 text-white">
+                {list
+                  ? list.hits.map((item, i) => (
+                      <a
+                        key={i}
+                        onClick={() => setData(item)}
+                        className="relative z-0 flex h-80 cursor-pointer flex-col items-center justify-end rounded-lg bg-slate-200 p-6 pt-16 text-center text-white duration-100 ease-in hover:scale-105 hover:text-white dark:bg-white dark:bg-opacity-10 dark:hover:bg-opacity-25"
+                      >
+                        <img
+                          src={item.recipe.images.THUMBNAIL.url}
+                          alt=""
+                          className="absolute -top-16 w-44 rounded-full"
+                        />
+                        <p className="line-clamp-1 text-xl font-semibold text-slate-600 dark:text-slate-50">
+                          {item.recipe.label}
+                        </p>
+                        <p className="text-base text-slate-600 opacity-50 dark:text-slate-50">
+                          {Math.round(item.recipe.calories)} calories
+                        </p>
+                        <div className="my-6 w-full border-t border-slate-400 dark:opacity-20"></div>
+                        <div className="flex w-full justify-center gap-2 overflow-hidden">
+                          <span className="line-clamp-1 rounded-md bg-slate-400 p-2 text-sm text-slate-200 dark:bg-white dark:bg-opacity-10 dark:text-white">
+                            {item.recipe.dishType}
+                          </span>
+                          <span className="line-clamp-1 rounded-md bg-slate-400 p-2 text-sm text-slate-200 dark:bg-white dark:bg-opacity-10 dark:text-white">
+                            {item.recipe.cuisineType}
+                          </span>
+                        </div>
+                      </a>
+                    ))
+                  : // Loading skeleton
+                    Array.from({ length: 20 }, (_, index) => (
+                      <div
+                        key={index}
+                        className="relative z-0 mb-4 flex h-80 h-80 animate-pulse cursor-pointer flex-col items-center justify-end rounded-lg rounded-lg  bg-slate-200 p-6  pt-16 text-center dark:bg-gray-800"
+                      >
+                        <div className="absolute -top-16 mb-4 h-44 w-44 rounded-full bg-gray-400 dark:bg-gray-700"></div>
+                        <div className="mb-2 h-6 w-full rounded bg-gray-400 dark:bg-gray-700"></div>
+                        <div className="mb-2 h-6 w-full rounded bg-gray-400 dark:bg-gray-700"></div>
+                        <div className="mb-2 h-6 w-full rounded bg-gray-400 dark:bg-gray-700"></div>
+                        <div className="h-6 w-full rounded bg-gray-400 dark:bg-gray-700"></div>
+                      </div>
+                    ))}
+                {/* 
                 {list?.hits.map((item, i) => (
                   <a
                     key={i}
@@ -144,15 +193,15 @@ function App() {
                     </p>
                     <div className="my-6 w-full border-t border-slate-400 dark:opacity-20"></div>
                     <div className="flex w-full justify-center gap-2 overflow-hidden">
-                      <span className="line-clamp-1 rounded-md bg-slate-600 p-2 text-sm text-slate-200 dark:bg-white dark:bg-opacity-10 dark:text-white">
+                      <span className="line-clamp-1 rounded-md bg-slate-400 p-2 text-sm text-slate-200 dark:bg-white dark:bg-opacity-10 dark:text-white">
                         {item.recipe.dishType}
                       </span>
-                      <span className="line-clamp-1 rounded-md bg-slate-600 p-2 text-sm text-slate-200 dark:bg-white dark:bg-opacity-10 dark:text-white">
+                      <span className="line-clamp-1 rounded-md bg-slate-400 p-2 text-sm text-slate-200 dark:bg-white dark:bg-opacity-10 dark:text-white">
                         {item.recipe.cuisineType}
                       </span>
                     </div>
                   </a>
-                ))}
+                ))} */}
                 <div className="mt-4 flex gap-2">{/* {list._links.} */}</div>
               </div>
 

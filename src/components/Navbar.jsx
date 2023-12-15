@@ -20,7 +20,10 @@ const Navbar = ({
         {/* Search form */}
         <form
           className="relative flex h-14 w-[500px] items-center gap-4 rounded-xl bg-slate-200 p-2 ps-6 text-xl text-slate-700 dark:bg-white dark:bg-opacity-10 dark:text-white"
-          onSubmit={() => handleSearchRecipes()}
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSearchRecipes();
+          }}
         >
           <input
             type="text"
